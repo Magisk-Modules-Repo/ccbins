@@ -1,69 +1,36 @@
-##########################################################################################
-#
-# MMT Extended Config Script
-#
-##########################################################################################
-
-##########################################################################################
-# Config Flags
-##########################################################################################
-
-# Uncomment and change 'MINAPI' and 'MAXAPI' to the minimum and maximum android version for your mod
-# Uncomment DYNLIB if you want libs installed to vendor for oreo+ and system for anything older
-# Uncomment DEBUG if you want full debug logs (saved to /sdcard)
-#MINAPI=21
-#MAXAPI=25
-#DYNLIB=true
-#DEBUG=true
-
-##########################################################################################
-# Replace list
-##########################################################################################
-
-# List all directories you want to directly replace in the system
-# Check the documentations for more info why you would need this
-
-# Construct your list in the following format
-# This is an example
-REPLACE_EXAMPLE="
-/system/app/Youtube
-/system/priv-app/SystemUI
-/system/priv-app/Settings
-/system/framework
-"
-
-# Construct your own list here
-REPLACE="
-"
-
-##########################################################################################
-# Permissions
-##########################################################################################
-
-set_permissions() {
-  set_perm $MODPATH/busybox 0 0 0755
-  set_perm_recursive $MODPATH/system 0 0 0755 0755
-
-  # Note that all files/folders in magisk module directory have the $MODPATH prefix - keep this prefix on all of your files/folders
-  # Some examples:
-  
-  # For directories (includes files in them):
-  # set_perm_recursive  <dirname>                <owner> <group> <dirpermission> <filepermission> <contexts> (default: u:object_r:system_file:s0)
-  
-  # set_perm_recursive $MODPATH/system/lib 0 0 0755 0644
-  # set_perm_recursive $MODPATH/system/vendor/lib/soundfx 0 0 0755 0644
-
-  # For files (not in directories taken care of above)
-  # set_perm  <filename>                         <owner> <group> <permission> <contexts> (default: u:object_r:system_file:s0)
-  
-  # set_perm $MODPATH/system/lib/libart.so 0 0 0644
-  # set_perm /data/local/tmp/file.txt 0 0 644
+test_connection() {
+  echo "- Testing internet connection"
+  (ping -q -c 1 -W 1 google.com >/dev/null 2>&1) && return 0 || return 1
 }
 
-##########################################################################################
-# MMT Extended Logic - Don't modify anything after this
-##########################################################################################
+if ! $BOOTMODE; then
+  ui_print "- Only uninstall is supported in recovery"
+  rm -rf $MODPATH $NVBASE/modules_update/$MODID $TMPDIR 2>/dev/null
+  abort "Uninstalling!"
+fi
 
-SKIPUNZIP=1
-unzip -qjo "$ZIPFILE" 'common/functions.sh' -d $TMPDIR >&2
-. $TMPDIR/functions.sh
+# Setup needed applets
+set_perm $MODPATH/busybox-$ARCH32 0 0 0755
+alias ping="$MODPATH/busybox-$ARCH32 ping"
+alias wget="$MODPATH/busybox-$ARCH32 wget"
+
+test_connection || { ui_print " "; abort "!This mod requires internet for install!"; }
+
+if [ -f $NVBASE/modules/$MODID/system/bin/ccbins ]; then
+  ui_print "- Using current ccbin files/settings"
+  cp -af $NVBASE/modules/$MODID/system $MODPATH
+  cp -pf $NVBASE/modules/$MODID/.* $MODPATH 2>/dev/null
+else
+  mkdir -p $MODPATH/system/bin
+fi
+ui_print "- Downloading needed files"
+wget -O $MODPATH/mod-util.sh https://github.com/Zackptg5/Cross-Compiled-Binaries-Android/raw/master/mod-util.sh 2>/dev/null
+wget -O $MODPATH/system/bin/ccbins https://github.com/Zackptg5/Cross-Compiled-Binaries-Android/raw/master/ccbins 2>/dev/null
+wget -O $MODPATH/busybox https://github.com/Zackptg5/Cross-Compiled-Binaries-Android/raw/master/busybox/busybox-$ARCH 2>/dev/null
+rm -f $MODPATH/busybox-*
+set_perm $MODPATH/busybox 0 0 0755
+locs="$(grep '^locs=' $MODPATH/system/bin/ccbins)"
+eval $locs
+for i in $locs; do
+  [ -d $MODPATH$i ] && chmod -R 0755 $MODPATH$i
+done
