@@ -29,6 +29,7 @@ wget -O $MODPATH/system/bin/ccbins https://github.com/Zackptg5/Cross-Compiled-Bi
 wget -O $MODPATH/busybox https://github.com/Zackptg5/Cross-Compiled-Binaries-Android/raw/master/busybox/busybox-$ARCH 2>/dev/null
 rm -f $MODPATH/busybox-*
 set_perm $MODPATH/busybox 0 0 0755
+set_perm $MODPATH/system/bin/ccbins 0 0 0755
 locs="$(grep '^locs=' $MODPATH/system/bin/ccbins)"
 eval $locs
 for i in $locs; do
