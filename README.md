@@ -8,7 +8,10 @@ ccbins
 ```
 
 ## Change Log
-### v.02 - 3.9.2020
+### v3.0 - 9.12.2020
+* Updated busybox
+
+### v2.0 - 3.9.2020
 * Update boot scripts for recently added binaries
 * Add mkshrc stuff
 * Add rest of mod to repo - everything should be self-updating now
