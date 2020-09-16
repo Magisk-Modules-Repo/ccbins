@@ -8,6 +8,9 @@ ccbins
 ```
 
 ## Change Log
+### v4.0 - 9.26.2020
+* Use github instead of google for connection test - fixes issues for chinese users and makes more sense in general (since everything in this mod is hosted there)
+
 ### v3.0 - 9.12.2020
 * Updated busybox
 

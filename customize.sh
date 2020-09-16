@@ -1,6 +1,6 @@
 test_connection() {
   echo "- Testing internet connection"
-  (ping -q -c 1 -W 1 google.com >/dev/null 2>&1) && return 0 || return 1
+  (ping -q -c 1 -W 1 github.com >/dev/null 2>&1) && return 0 || return 1
 }
 
 if ! $BOOTMODE; then
