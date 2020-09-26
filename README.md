@@ -8,12 +8,9 @@ ccbins
 ```
 
 ## Change Log
-### v5.0 - 9.25.2020
+### v4.0 - 9.25.2020
 * Go back to using google for ping check - github wasn't working for some people. Fallback to baidu if google fails (for chinese users)
 * Use curl rather than wget - some users were having issues with busybox wget
-
-### v4.0 - 9.26.2020
-* Use github instead of google for connection test - fixes issues for chinese users and makes more sense in general (since everything in this mod is hosted there)
 
 ### v3.0 - 9.12.2020
 * Updated busybox
