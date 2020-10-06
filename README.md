@@ -8,6 +8,10 @@ ccbins
 ```
 
 ## Change Log
+### v5.0 - 10.5.2020
+* Switch everything to curl, no need for ping or wget anymore
+* Verify proper download of mod files with md5sum
+
 ### v4.0 - 9.25.2020
 * Go back to using google for ping check - github wasn't working for some people. Fallback to baidu if google fails (for chinese users)
 * Use curl rather than wget - some users were having issues with busybox wget
