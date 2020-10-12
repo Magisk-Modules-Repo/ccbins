@@ -12,16 +12,21 @@ API=`getprop ro.build.version.sdk`
 mv -f $MODPATH/curl-$ARCH32 $MODPATH/curl
 set_perm $MODPATH/curl 0 0 0755
 [ $API -lt 23 ] && alias curl="$MODPATH/curl -kLs" || alias curl="$MODPATH/curl -Ls"
+# Setup needed busybox applets
+set_perm $MODPATH/busybox-$ARCH32 0 0 0755
+alias grep="$MODPATH/busybox-$ARCH32 grep"
+alias ping="$MODPATH/busybox-$ARCH32 ping"
 
 test_connection() {
   echo "- Testing internet connection"
-  if curl --connect-timeout 3 -I https://www.google.com | grep -q 'HTTP/.* 200'; then
-    return 0
-  elif curl --connect-timeout 3 -I https://www.baidu.com | grep -q 'HTTP/.* 200'; then
-    return 0
-  else
-    return 1
-  fi
+  for i in github google baidu; do
+    if curl --connect-timeout 3 -I https://www.$i.com | grep -q 'HTTP/.* 200' || ping -q -c 1 -W 1 $i.com >/dev/null; then
+      return 0
+    elif curl --connect-timeout 3 -I https://www.$i.com | grep -q 'HTTP/.* 200' || ping -q -c 1 -W 1 $i.com >/dev/null; then
+      return 0
+    fi
+  done
+  return 1
 }
 
 test_connection || { ui_print " "; abort "!This mod requires internet for install!"; }

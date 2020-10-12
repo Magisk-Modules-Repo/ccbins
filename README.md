@@ -8,6 +8,9 @@ ccbins
 ```
 
 ## Change Log
+### v6.0 - 10.12.2020
+* Further tweaks to connection test
+
 ### v5.0 - 10.5.2020
 * Switch everything to curl, no need for ping or wget anymore
 * Verify proper download of mod files with md5sum
