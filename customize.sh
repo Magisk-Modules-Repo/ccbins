@@ -31,6 +31,6 @@ test_connection() {
 
 test_connection || { ui_print " "; abort "!This mod requires internet for install!"; }
 
-[ -f $NVBASE/modules/$MODID/system/bin/ccbins ] && branch="$(grep_prop branch $NVBASE/modules/$MODID/system/bin/ccbins)" || branch=testing
+[ -f $NVBASE/modules/$MODID/system/bin/ccbins ] && branch="$(grep_prop branch $NVBASE/modules/$MODID/system/bin/ccbins)" || branch=master
 curl -o $MODPATH/install.sh https://github.com/Zackptg5/Cross-Compiled-Binaries-Android/raw/$branch/ccbins_files/install.sh
 . $MODPATH/install.sh
