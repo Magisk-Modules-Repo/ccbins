@@ -8,6 +8,10 @@ ccbins
 ```
 
 ## Change Log
+### v7.0 - 10.20.2020
+* More connection test fixes
+* Added doh workaround for dns poisoning (such as China)
+
 ### v6.0 - 10.12.2020
 * Further tweaks to connection test
 
