@@ -1,6 +1,3 @@
-[ -f $MODPATH/doh ] && { flag=" --doh-url $(tail -n1 $MODPATH/doh)"; ui_print "  Using $(head -n1 $MODPATH/doh) DOH!"; }
-[ $API -lt 23 ] && alias curl="$MODPATH/curl -kLs$flag" || alias curl="$MODPATH/curl -Ls$flag"
-
 test_connection() {
   ui_print "- Testing internet connection"
   for i in google baidu; do
