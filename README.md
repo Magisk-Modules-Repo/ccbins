@@ -8,6 +8,10 @@ ccbins
 ```
 
 ## Change Log
+### v7.1 - 2.12.2021
+* Added workaround for curl dns server issues - will work without root now
+* Updated module copy of curl
+
 ### v7.0 - 10.20.2020
 * More connection test fixes
 * Added doh workaround for dns poisoning (such as China)
