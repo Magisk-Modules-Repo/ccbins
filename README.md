@@ -8,7 +8,7 @@ ccbins
 ```
 
 ## Change Log
-### v7.1 - 2.12.2021
+### v7.1 - 2.13.2021
 * Added workaround for curl dns server issues - will work without root now
 * Updated module copy of curl
 
