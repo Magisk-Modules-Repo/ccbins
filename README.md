@@ -8,6 +8,9 @@ ccbins
 ```
 
 ## Change Log
+### v7.2 - 5.10.2021
+* Update wireguard binaries
+
 ### v7.1 - 2.13.2021
 * Added workaround for curl dns server issues - will work without root now
 * Updated module copy of curl
