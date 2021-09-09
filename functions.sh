@@ -1,3 +1,6 @@
+unset curl
+alias curl="$curlalias"
+
 test_connection() {
   ui_print "- Testing internet connection"
   for i in google baidu; do

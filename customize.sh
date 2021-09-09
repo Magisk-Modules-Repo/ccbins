@@ -8,6 +8,7 @@ if ! $BOOTMODE; then
 fi
 
 # Setup needed busybox applets
+[ -z $ARCH32 ] && ARCH32=$(echo $ARCH | cut -c-3)
 set_perm $MODPATH/busybox-$ARCH32 0 0 0755
 alias awk="$MODPATH/busybox-$ARCH32 awk"
 alias grep="$MODPATH/busybox-$ARCH32 grep"
@@ -22,12 +23,11 @@ done
 [ -f $NVBASE/modules/$MODID/doh ] && cp -f $NVBASE/modules/$MODID/doh $MODPATH/doh
 alias wg="$MODPATH/wg"
 alias wg-quick="$MODPATH/wg-quick"
-[ -f $MODPATH/doh ] && { flag=" --doh-url $(tail -n1 $MODPATH/doh)"; ui_print "  Using $(head -n1 $MODPATH/doh) DOH!"; }
-[ $API -lt 23 ] && alias curl="$MODPATH/curl -kLs$flag" || alias curl="$MODPATH/curl -Ls$flag"
+[ $API -lt 23 ] && curlalias="$MODPATH/curl -kLs" || curlalias="$MODPATH/curl -Ls"
+[ -f $MODPATH/doh ] && { curlalias="$curlalias --doh-url $(tail -n1 $MODPATH/doh)"; ui_print "  Using $(head -n1 $MODPATH/doh) DOH!"; }
 
 # Wireguard fix - use wireguard dns servers if specified
 if [ "$(pm list packages com.wireguard.android)" ] && [ "$(wg show)" ]; then
-  curlalias="$(alias | grep 'curl=' | sed -r "s/curl='(.*)'/\1/")"
   wgint="$(wg show | grep 'interface' | sed 's/interface: //')"
   # Initial log/output from starting a tunnel is only surefire way to get the dns addresses to my knowledge
   for i in $wgint; do
@@ -39,7 +39,7 @@ if [ "$(pm list packages com.wireguard.android)" ] && [ "$(wg show)" ]; then
   done
   dnsrvs="$(echo "$dnsrvs" | sed 's/^,//')"
   rm -f $MODPATH/tmp
-  alias curl="$(echo "$curlalias" | sed "s/curl /curl --dns-servers $dnsrvs /")"
+  curlalias="$curlalias --dns-servers $dnsrvs"
 fi
 
 . $MODPATH/functions.sh
@@ -50,7 +50,7 @@ test_connection || abort "This mod requires internet for install!"
 if ! download_file $MODPATH/.checksums https://raw.githubusercontent.com/Zackptg5/Cross-Compiled-Binaries-Android/$branch/ccbins_files/checksums.txt; then
   [ -z "$flag" ] || abort "Unable to download files!"
   echo -e "Alibaba\nhttps://dns.alidns.com/dns-query" > $MODPATH/doh
-  flag=" --doh-url $(tail -n1 $MODPATH/doh)"
+  curlalias="$curlalias --doh-url $(tail -n1 $MODPATH/doh)"
   [ -d $NVBASE/modules/$MODID ] && cp -f $MODPATH/doh $NVBASE/modules/$MODID/doh
   . $MODPATH/functions.sh
   download_file $MODPATH/.checksums https://raw.githubusercontent.com/Zackptg5/Cross-Compiled-Binaries-Android/$branch/ccbins_files/checksums.txt || abort "Unable to download files!"
