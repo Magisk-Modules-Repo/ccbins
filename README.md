@@ -11,7 +11,7 @@ ccbins
 ### v8.0 - 9.9.2021
 * Fix bug with doh workaround
 * Fix for magisk canary
-* Update curl and wireguard binaries
+* Update curl binaries
 
 ### v7.2 - 5.10.2021
 * Update wireguard binaries
