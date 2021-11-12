@@ -1,10 +1,11 @@
 unset curl
-alias curl="$curlalias"
+alias curl="$curlalias$dns"
 
 test_connection() {
   ui_print "- Testing internet connection"
-  for i in google baidu; do
-    if curl --connect-timeout 3 -I https://www.$i.com | grep -q 'HTTP/.* 200' || ping -q -c 1 -W 1 $i.com >/dev/null 2>&1; then
+  for i in google,8.8.8.8 baidu,223.5.5.5; do # Google or Ali DNS
+    local domain=$(echo $i | cut -d , -f1) ip=$(echo $i | cut -d , -f2)
+    if curl --connect-timeout 3 -I https://www.$domain.com --dns-servers $ip | grep -q 'HTTP/.* 200' || ping -q -c 1 -W 1 $i.com >/dev/null 2>&1; then
       return 0
     fi
   done
