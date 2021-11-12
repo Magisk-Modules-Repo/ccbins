@@ -8,7 +8,7 @@ ccbins
 ```
 
 ## Change Log
-### v8.1 - 11.xx.2021
+### v8.1 - 11.11.2021
 * Update curl binary
 * Fixes for magisk canary
 
