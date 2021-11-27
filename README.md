@@ -8,6 +8,11 @@ ccbins
 ```
 
 ## Change Log
+### v9.0 - 11.27.2021
+* Update curl binary for real this time
+* Streamline installer process
+* Overhaul wireguard support
+
 ### v8.1 - 11.11.2021
 * Update curl binary
 * Fixes for magisk canary
