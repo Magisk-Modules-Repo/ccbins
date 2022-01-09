@@ -8,6 +8,9 @@ ccbins
 ```
 
 ## Change Log
+### v9.1 - 1.9.2022
+* Bug fix with connection test
+
 ### v9.0 - 11.27.2021
 * Update curl binary for real this time
 * Streamline installer process

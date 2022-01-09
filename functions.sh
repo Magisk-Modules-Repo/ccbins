@@ -19,7 +19,7 @@ test_connection_doh() {
 test_connection_main() {
   for i in google,1.1.1.1,1.0.0.1 baidu,223.5.5.5,223.6.6.6; do # Cloudflare or Ali DNS
     local domain=$(echo $i | cut -d , -f1) ip=$(echo $i | cut -d , -f2-)
-    if curl --connect-timeout 3 -I https://www.$domain.com --dns-servers $ip | grep -q 'HTTP/.* 200' || ping -q -c 1 -W 1 $i.com >/dev/null 2>&1; then
+    if curl --connect-timeout 3 -I https://www.$domain.com --dns-servers $ip | grep -q 'HTTP/.* 200' || ping -q -c 1 -W 1 $domain.com >/dev/null 2>&1; then
       export dns="$ip"
       return 0
     fi
