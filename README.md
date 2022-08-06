@@ -8,6 +8,10 @@ ccbins
 ```
 
 ## Change Log
+### v9.2 - 8.5.22
+* Update curl binary
+* Update terminalmods to new repo
+
 ### v9.1 - 1.9.2022
 * Bug fix with connection test
 

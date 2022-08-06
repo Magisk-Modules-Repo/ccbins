@@ -91,8 +91,8 @@ if [ -d $NVBASE/modules/terminalmods ]; then
 else
   ui_print "   Terminal Modifications not module detected!"
   ui_print "   Installing!"
-  if curl -I --connect-timeout 3 https://github.com/Magisk-Modules-Repo/terminalmods/archive/master.zip | grep -q 'HTTP/.* 200'; then
-    curl -o $TMPDIR/tmp.zip https://github.com/Magisk-Modules-Repo/terminalmods/archive/master.zip
+  if curl -I --connect-timeout 3 https://github.com/skittles9823/terminalmods/archive/master.zip | grep -q 'HTTP/.* 200'; then
+    curl -o $TMPDIR/tmp.zip https://github.com/skittles9823/terminalmods/archive/master.zip
     unzip -qo $TMPDIR/tmp.zip terminalmods-master/customize.sh terminalmods-master/module.prop 'terminalmods-master/custom/*' 'terminalmods-master/system/*' -d $MODULEROOT
     mv -f $MODULEROOT/terminalmods-master $MODULEROOT/terminalmods
     sed -i "s|\$MODPATH|$MODULEROOT/terminalmods|g" $MODULEROOT/terminalmods/customize.sh
