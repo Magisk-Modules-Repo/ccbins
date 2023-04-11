@@ -62,6 +62,10 @@ fi
 $IS64BIT && libfol="system/lib64" || libfol="system/lib"
 mktouch $MODPATH/system/etc/placeholder
 mktouch $MODPATH/$libfol/placeholder
+for i in /system/bin /system/xbin /system/vendor/bin /system/vendor/xbin; do
+  [ -d "$i" ] || continue
+  mktouch $MODPATH$i
+done
 
 # Get mod files
 ui_print "- Downloading and installing needed files"
