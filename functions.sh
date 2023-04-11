@@ -38,3 +38,15 @@ download_file() {
     grep -Fwq "`md5sum "$file" | awk '{print $1}'`" $MODPATH/.checksums || { rm -f "$file"; touch $MODPATH/dlerror; ui_print "Download error for $file!"; }
   fi
 }
+
+install_ncursesw() {
+  download_file $MODPATH/.ncursesver https://raw.githubusercontent.com/Zackptg5/Cross-Compiled-Binaries-Android/$branch/ncursesw/version.txt
+  [ -f $MODPATH/dlerror ] && { echo "Binary update check failed!"; return 0; }
+  download_file $MODPATH/system/ncursesw.zip https://raw.githubusercontent.com/Zackptg5/Cross-Compiled-Binaries-Android/$branch/ncursesw/ncursesw-$ARCH.zip
+  if [ ! -f $MODPATH/dlerror ]; then
+    unzip -qod $MODPATH/system $MODPATH/system/ncursesw.zip
+    rm -f $MODPATH/system/ncursesw.zip
+  else
+    rm -f $MODPATH/system/ncursesw.zip
+  fi
+}

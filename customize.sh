@@ -50,13 +50,18 @@ fi
 
 # Keep current mod settings
 if [ -f $NVBASE/modules/$MODID/system/bin/ccbins ]; then
-  ui_print "- Using current ccbin files/settings"
+  ui_print "- Using current ccbins files/settings"
   rm -f $NVBASE/modules/$MODID/.checksums
   cp -af $NVBASE/modules/$MODID/system $MODPATH
   cp -pf $NVBASE/modules/$MODID/.* $MODPATH 2>/dev/null
 else
   mkdir -p $MODPATH/system/bin
 fi
+
+# Create folders for tmpfs mounts needed later
+$IS64BIT && libfol="system/lib64" || libfol="system/lib"
+mktouch $MODPATH/system/etc/placeholder
+mktouch $MODPATH/$libfol/placeholder
 
 # Get mod files
 ui_print "- Downloading and installing needed files"
@@ -82,6 +87,8 @@ eval $locs
 for i in $locs; do
   [ -d $MODPATH$i ] && chmod -R 0755 $MODPATH$i
 done
+
+install_ncursesw
 
 # Requires @Skittles9823's TerminalMods module
 ui_print "- Terminal Modifications"

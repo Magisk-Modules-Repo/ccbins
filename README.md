@@ -8,6 +8,12 @@ ccbins
 ```
 
 ## Change Log
+### v10 - 4.11.23
+* Overhaul mounting for magisk v26 - can now mount on the fly without need for reboot for magisk 26+ installs
+* Split upgrade path - Users with magisk < v26 can use ccbins legacy - essentially v23.
+  * Still pulls latest binaries - completely functional for foreseeable future
+* Install all requirements during initial zip install rather than later
+
 ### v9.2 - 8.5.22
 * Update curl binary
 * Update terminalmods to new repo
