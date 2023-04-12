@@ -62,9 +62,9 @@ fi
 $IS64BIT && libfol="system/lib64" || libfol="system/lib"
 mktouch $MODPATH/system/etc/placeholder
 mktouch $MODPATH/$libfol/placeholder
-for i in /system/bin /system/xbin /system/vendor/bin /system/vendor/xbin; do
+for i in /system/xbin /system/vendor/bin /system/vendor/xbin; do
   [ -d "$i" ] || continue
-  mktouch $MODPATH$i
+  mktouch $MODPATH$i/placeholder
 done
 
 # Get mod files
