@@ -1,6 +1,13 @@
 unalias curl
 alias curl="$curlalias"
 
+require_new_ksu() {
+  ui_print "**********************************"
+  ui_print " Please install KernelSU v0.6.6+! "
+  ui_print "**********************************"
+  exit 1
+}
+
 test_connection() {
   ui_print "- Testing internet connection"
   [ -f $MODPATH/doh ] && test_connection_doh || test_connection_main

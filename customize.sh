@@ -1,6 +1,10 @@
 # Debug
 set -x
 
+# Detect magisk vs kernelsu
+[ -z $KSU ] && KSU=false
+$KSU && { [ $KSU_VER_CODE -lt 11184 ] && require_new_ksu; }
+
 if ! $BOOTMODE; then
   ui_print "- Only uninstall is supported in recovery"
   rm -rf $MODPATH $NVBASE/modules_update/$MODID $TMPDIR 2>/dev/null
@@ -60,11 +64,12 @@ fi
 
 # Create folders for tmpfs mounts needed later
 $IS64BIT && libfol="system/lib64" || libfol="system/lib"
-mktouch $MODPATH/system/etc/placeholder
-mktouch $MODPATH/$libfol/placeholder
-for i in /system/xbin /system/vendor/bin /system/vendor/xbin; do
+mktouch $MODPATH/system/etc/placeholder_ccbins
+mktouch $MODPATH/$libfol/placeholder_ccbins
+$KSU && parts="/system/vendor/bin /system/vendor/xbin" || parts="/vendor/bin /vendor/xbin"
+for i in /system/xbin $parts; do
   [ -d "$i" ] || continue
-  mktouch $MODPATH$i/placeholder
+  mktouch $MODPATH$i/placeholder_ccbins
 done
 
 # Get mod files
@@ -73,7 +78,7 @@ download_file $MODPATH/curl https://raw.githubusercontent.com/Zackptg5/Cross-Com
 [ -f $MODPATH/dlerror ] && { rm -f $MODPATH/dlerror; cp -f $MODPATH/curl-$ARCH32 $MODPATH/curl; } # This shouldn't happen but just in case
 set_perm $MODPATH/curl 0 0 0755
 
-for i in service.sh mod-util.sh "system/bin/ccbins"; do
+for i in post-fs-data.sh mod-util.sh "system/bin/ccbins"; do
   download_file $MODPATH/$i https://raw.githubusercontent.com/Zackptg5/Cross-Compiled-Binaries-Android/$branch/ccbins_files/$(basename $i)
   [ -f $MODPATH/dlerror ] && abort "Unable to download files!"
 done
@@ -94,27 +99,13 @@ done
 
 install_ncursesw
 
-# Requires @Skittles9823's TerminalMods module
-ui_print "- Terminal Modifications"
+# Detect TerminalMods module
 if [ -d $NVBASE/modules/terminalmods ]; then
+  ui_print "- Terminal Modifications"
   ui_print "   Terminal Modifications module detected"
-  ui_print "   Good, keep it"
-else
-  ui_print "   Terminal Modifications not module detected!"
-  ui_print "   Installing!"
-  if curl -I --connect-timeout 3 https://github.com/skittles9823/terminalmods/archive/master.zip | grep -q 'HTTP/.* 200'; then
-    curl -o $TMPDIR/tmp.zip https://github.com/skittles9823/terminalmods/archive/master.zip
-    unzip -qo $TMPDIR/tmp.zip terminalmods-master/customize.sh terminalmods-master/module.prop 'terminalmods-master/custom/*' 'terminalmods-master/system/*' -d $MODULEROOT
-    mv -f $MODULEROOT/terminalmods-master $MODULEROOT/terminalmods
-    sed -i "s|\$MODPATH|$MODULEROOT/terminalmods|g" $MODULEROOT/terminalmods/customize.sh
-    . $MODULEROOT/terminalmods/customize.sh
-    rm -f $MODULEROOT/terminalmods/customize.sh
-    mkdir $NVBASE/modules/terminalmods
-    cp -f $MODULEROOT/terminalmods/module.prop $NVBASE/modules/terminalmods/
-    touch $NVBASE/modules/terminalmods/update
-  else
-    ui_print "   Unable to download! Install through magisk manager!"
-  fi
+  ui_print "   Now conflicts with ccbins"
+  ui_print "   Uninstalling"
+  touch $NVBASE/modules/terminalmods/.remove
 fi
 
 # Cleanup

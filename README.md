@@ -8,6 +8,12 @@ ccbins
 ```
 
 ## Change Log
+### v11 - 8.13.23
+* No more terminalmods dependency - included in main mod now
+* No longer using /sdcard for any files due to scoped storage - many terminal apps don't have support for /sdcard perms
+* Update busybox and curl binaries
+* Add KSU support
+
 ### v10 - 4.11.23
 * Overhaul mounting for magisk v26 - can now mount on the fly without need for reboot for magisk 26+ installs
 * Split upgrade path - Users with magisk < v26 can use ccbins legacy - essentially v23.

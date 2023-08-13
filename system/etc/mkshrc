@@ -1,0 +1,27 @@
+# Copyright (c) 2010
+#	Thorsten Glaser <t.glaser@tarent.de>
+# This file is provided under the same terms as mksh.
+#-
+# Minimal /system/etc/mkshrc for Android
+
+: ${TERM:=xterm-256color} ${HOME:=/} ${MKSH:=/system/bin/sh} ${HOSTNAME:=android}
+: ${SHELL:=$MKSH} ${USER:=$(getprop ro.product.device)}
+if (( USER_ID )); then PS1='$'; else PS1='#'; fi
+
+PS1='$HOSTNAME@$USER:${PWD:-?} '"$PS1 "
+export TERM HOME MKSH HOSTNAME SHELL USER PATH
+export TERMINFO=/system/usr/share/terminfo
+
+for p in ~/.bin; do
+	[[ -d $p/. ]] || continue
+	[[ :$PATH: = *:$p:* ]] || PATH=$p:$PATH
+done
+
+unset p
+
+rootcheck(){
+  ROOT= && [ $USER = root ] || ROOT="su -c"
+}
+
+# Load aliases
+. "/system/etc/ccbins-aliases"
