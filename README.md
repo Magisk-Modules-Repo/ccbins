@@ -7,6 +7,9 @@ su
 ccbins
 ```
 
+## Issues
+* Open at [Cross Compiled Binaries Repo](https://github.com/Zackptg5/Cross-Compiled-Binaries-Android)
+
 ## Change Log
 ### v11 - 8.13.23
 * No more terminalmods dependency - included in main mod now
