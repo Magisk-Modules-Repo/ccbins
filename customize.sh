@@ -2,7 +2,7 @@
 set -x
 
 # Detect magisk vs kernelsu
-[ -z $KSU ] && KSU=false
+[ -z $KSU ] && { KSU=false; [ $MAGISK_VER_CODE -ge 27000 ] && require_old_magisk; }
 $KSU && { [ $KSU_VER_CODE -lt 11184 ] && require_new_ksu; }
 
 if ! $BOOTMODE; then

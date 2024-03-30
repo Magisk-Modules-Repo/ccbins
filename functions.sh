@@ -1,6 +1,13 @@
 unalias curl
 alias curl="$curlalias"
 
+require_old_magisk() {
+  ui_print "**********************************"
+  ui_print " Not compatible with Magisk v27+  "
+  ui_print "**********************************"
+  exit 1
+}
+
 require_new_ksu() {
   ui_print "**********************************"
   ui_print " Please install KernelSU v0.6.6+! "

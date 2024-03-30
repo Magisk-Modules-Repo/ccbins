@@ -7,10 +7,17 @@ su
 ccbins
 ```
 
+## Compatibility:
+* Magisk < v27
+
 ## Issues
 * Open at [Cross Compiled Binaries Repo](https://github.com/Zackptg5/Cross-Compiled-Binaries-Android)
 
 ## Change Log
+### v12 - 3.30.24
+* Added compatibility check - only compatible with magisk < v27
+* Final update. Feel free to fork and update for magisk atomic mount if you want
+
 ### v11 - 8.13.23
 * No more terminalmods dependency - included in main mod now
 * No longer using /sdcard for any files due to scoped storage - many terminal apps don't have support for /sdcard perms
